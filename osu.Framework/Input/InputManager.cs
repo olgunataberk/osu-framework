@@ -64,6 +64,8 @@ namespace osu.Framework.Input
 
         private bool isValidClick;
 
+        public event Action TryForceStart = null;
+
         /// <summary>
         /// The last processed state.
         /// </summary>
@@ -463,7 +465,12 @@ namespace osu.Framework.Input
                 if (FocusedDrawable.TriggerKeyDown(state, args))
                     return true;
             }
-
+            //If F is pressed invoke the forceStart function of Player
+            if (args.Key == Key.F)
+            {
+                if (TryForceStart != null)
+                    TryForceStart?.Invoke();
+            }
             return keyboardInputQueue.Any(target => target.TriggerKeyDown(state, args));
         }
 
